@@ -29,27 +29,29 @@ export default function Home() {
     }
   
     onLoad();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, userEmail]);
   
   function loadStocks() {
+    console.log(userEmail);
     const path = `/username/${userEmail}`;
     return API.get("user CRUD Service", path);
   }
 
   function renderStocksList(stocks) {
-    return (
-        <>
-          {stocks.map(({ stock }) => (
-            <LinkContainer>
-              <ListGroup.Item>
-                <span className="text-muted">
-                  Name: {stock}
-                </span>
-              </ListGroup.Item>
-            </LinkContainer>
-          ))}
-        </>
-      );
+    console.log(stocks);
+    // return (
+    //     <>
+    //       {stocks.map(({ stock }) => (
+    //         <LinkContainer>
+    //           <ListGroup.Item>
+    //             <span className="text-muted">
+    //               Name: {stock}
+    //             </span>
+    //           </ListGroup.Item>
+    //         </LinkContainer>
+    //       ))}
+    //     </>
+    //   );
   }
 
   function renderLander() {
