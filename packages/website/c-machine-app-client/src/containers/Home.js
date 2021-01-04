@@ -20,6 +20,7 @@ export default function Home() {
   
       try {
         const stocks = await loadStocks();
+        console.log(stocks);
         setStocks(stocks);
       } catch (e) {
         onError(e);
