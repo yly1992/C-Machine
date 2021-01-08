@@ -39,7 +39,7 @@ export default function Home() {
   }
 
   function renderStocksList(stocks) {
-    console.log(stocks);
+    console.log(JSON.stringify(stocks));
     // return (
     //     <>
     //       {stocks.map(({ stock }) => (

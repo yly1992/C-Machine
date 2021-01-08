@@ -6,7 +6,7 @@ import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import "./Signup.css";
 import { onError } from "../libs/errorLib";
-import Auth from '@aws-amplify/auth';
+import { Auth } from "aws-amplify";
 
 
 export default function Signup() {
