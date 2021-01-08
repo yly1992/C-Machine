@@ -11,44 +11,46 @@ https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html
 const AWS = require('aws-sdk');
 const S3 = new AWS.S3();
 const tableName = process.env.TABLENAME;
-var dynamodb = new AWS.DynamoDB();
+const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-1'});
 
-exports.main = async function(event, context) {
+exports.main = async function (event, context) {
   try {
     var method = event.httpMethod;
-
     if (method === "GET") {
-      console.log(event);
-      console.log(tableName);
-      let username = event.requestContext.identity.cognitoIdentityId;
-      console.log()
+      let username = event['pathParameters']['username']
+      console.log("username " + username);
       var params = {
         Key: {
-         "username": {
-           S: username
-          }
-        }, 
+          "username":  username
+        },
         TableName: tableName
-       };
-  
+      };
 
-      const data = await dynamodb.getItem(params).promise()
-      console.log("success")
-      console.log(data)
-      return data
+
+      const data = await docClient.get(params).promise()
+      console.log("success " + data);
+
+      return {
+        statusCode: 200,
+         headers: {
+            "Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        },
+        body: JSON.stringify(data)
+      };
     }
-    // We only accept GET for now
-    return {
-      statusCode: 400,
-      headers: {},
-      body: "We only accept GET /"
-    };
-  } catch(error) {
+    
+  } catch (error) {
     var body = error.stack || JSON.stringify(error, null, 2);
     return {
       statusCode: 400,
-        headers: {},
-        body: JSON.stringify(body)
+      headers: {
+          "Access-Control-Allow-Headers" : "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+      },
+      body: JSON.stringify(body)
     }
   }
 }
