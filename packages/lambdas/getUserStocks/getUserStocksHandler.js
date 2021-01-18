@@ -26,7 +26,6 @@ exports.main = async function (event, context) {
         TableName: tableName
       };
 
-
       const data = await docClient.get(params).promise()
       console.log("success " + data);
 

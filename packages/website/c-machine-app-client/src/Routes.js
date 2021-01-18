@@ -4,6 +4,7 @@ import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
+import AboutAuthor from "./containers/AboutAuthor";
 
 
 export default function Routes() {
@@ -15,11 +16,14 @@ export default function Routes() {
             <Route exact path="/login">
                 <Login />
             </Route>
-            <Route>
-                <NotFound />
-            </Route>
             <Route exact path="/signup">
                 <Signup />
+            </Route>
+            <Route exact path="/aboutAuthor">
+                <AboutAuthor />
+            </Route>
+            <Route>
+                <NotFound />
             </Route>
         </Switch>
     );

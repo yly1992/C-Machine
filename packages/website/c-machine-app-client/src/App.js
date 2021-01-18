@@ -65,6 +65,9 @@ function App() {
                   <LinkContainer to="/login">
                     <Nav.Link>Login</Nav.Link>
                   </LinkContainer>
+                  <LinkContainer to="/aboutAuthor">
+                    <Nav.Link>About Author</Nav.Link>
+                  </LinkContainer>
                 </>
               )}
             </Nav>

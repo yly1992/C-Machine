@@ -1,0 +1,15 @@
+{
+  "name": "getnews",
+  "version": "1.0.0",
+  "description": "",
+  "main": "getNews.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "websocket": "^1.0.33",
+    "ws": "^7.4.2"
+  }
+}
