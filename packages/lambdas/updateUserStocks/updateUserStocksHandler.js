@@ -11,42 +11,54 @@ https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html
 const AWS = require('aws-sdk');
 const S3 = new AWS.S3();
 const tableName = process.env.TABLENAME;
-var dynamodb = new AWS.DynamoDB();
+const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-1'});
 
-exports.main = async function(event, context) {
+
+exports.main = async function (event, context) {
   try {
     var method = event.httpMethod;
-
     if (method === "PUT") {
-      console.log(event);
-      console.log(tableName);
+      let username = event['pathParameters']['username'];
+      console.log(username)
+      let data = event.body
       var params = {
         Key: {
-         "username": {
-           S: event.username
-          }
-        }, 
-        TableName: 'TEST'
-       };
-  
+          "username":  username
+        },
+        TableName: tableName,
+        UpdateExpression: "SET stocks = :stocks, ETFs = :ETFs",
+        ExpressionAttributeValues: {
+            ":stocks": data.stocks || null,
+            ":ETFs": data.ETFs || null,
+        },
+        ReturnValues: "ALL_NEW"
+      };
+    
 
-      const data = await dynamodb.getItem(params).promise()
-      console.log("success")
-      console.log(data)
-      return data
+     await docClient.update(params).promise();
+
+
+      return {
+        statusCode: 200,
+         headers: {
+            "Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "*",  
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        },
+        body: {status : true}
+      };
     }
-    // We only accept GET for now
-    return {
-      statusCode: 400,
-      headers: {},
-      body: "We only accept GET /"
-    };
-  } catch(error) {
+    
+  } catch (error) {
     var body = error.stack || JSON.stringify(error, null, 2);
     return {
       statusCode: 400,
-        headers: {},
-        body: JSON.stringify(body)
+      headers: {
+          "Access-Control-Allow-Headers" : "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+      },
+      body: JSON.stringify(body)
     }
   }
 }
